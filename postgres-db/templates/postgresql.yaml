@@ -1,0 +1,18 @@
+apiVersion: "acid.zalan.do/v1"
+kind: postgresql
+metadata:
+  name:  {{ include "postgres-db.fullname" . }}
+spec:
+#  TODO replace LoadBalancer with Ingress
+  enableMasterLoadBalancer: true
+  teamId: "postgres"
+  volume:
+    size: {{ .Values.postgresql.volume.size }}
+  numberOfInstances: {{ .Values.replicaCount  }}
+  users:
+    # database owner
+    zalando:
+      - superuser
+      - createdb
+  postgresql:
+    version: "14"
